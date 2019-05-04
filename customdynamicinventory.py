@@ -40,9 +40,11 @@ class ExampleInventory(object):
     def example_inventory(self):
             
 
+
+
+    # Converting input.csv to dictionary
             rows = {}
             new_data_dict = {}
-
             with open(csvfilepath, 'r') as data_file:
                 data = csv.DictReader(data_file, delimiter=",")
 
@@ -51,11 +53,9 @@ class ExampleInventory(object):
                     temp_list = []
                     temp_list = row["hosts"].split(",")
                     item["hosts"] = temp_list
-                    #item["chidren"] = row["children"]
                     item["vars"] = dict()
-                    item["vars"]["ansible_ssh_user"] = row["ansible_ssh_user"]
-                    #item["vars"]["ansible_ssh_key"] =  row["ansible_ssh_user"]
-
+                    item["vars"]["ansible_ssh_user"] = row["ansible_ssh_user"]    
+                    item["vars"]["ansible_ssh_private_key_file"] =  row["ansible_ssh_private_key_file"]
                     new_data_dict[row["Groups"]] = item 
                     
                     item = {}
@@ -64,7 +64,7 @@ class ExampleInventory(object):
 
 
 
-            # converting it to into Json
+            # converting new_data_dict dictionary to Json
 
             with open(jsonFilePath, "w") as jsonFile:
                 jsonFile.write(json.dumps(new_data_dict, indent=4))
